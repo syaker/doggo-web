@@ -1,0 +1,97 @@
+.card {
+  background-color: white;
+  max-width: 500px;
+  margin: auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+h1 {
+  color: #333;
+  margin-bottom: 5px;
+}
+
+h2 {
+  color: #555;
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+.intro {
+  border-radius: 15px;
+  height: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
+.message-numbers {
+  column-count: 3;
+  column-gap: 20px;
+}
+
+.message-numbers p {
+  margin: 5px 0;
+}
+.encabezado {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+  background: #0eae7c;
+  height: 60px;
+  font-size: 24px;
+  padding: 21.5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  top: 15px;
+  left: 15px;
+  padding: 5px;
+}
+.titulo-cuidador {
+  font-size: 36px;
+  color: #ffffff;
+}
+.bloque-doggo {
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bloque-doggo img {
+  object-fit: cover;
+  height: 80px;
+}
+.intro {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 0px 10px 0px 35px; /* 10px arriba, 3px derecha, 30px abajo, 5px izquierda */
+}
+.barra-uno {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0eae7c;
+  color: white;
+  padding: 10px 9px;
+  font-size: 15px;
+}
