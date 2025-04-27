@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "doggoWen": {
+    "doggo": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/taller-semana-2",
+            "outputPath": "dist/doggo",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -50,10 +50,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "taller-semana-2:build:production"
+              "buildTarget": "doggo:build:production"
             },
             "development": {
-              "buildTarget": "taller-semana-2:build:development"
+              "buildTarget": "doggo:build:development"
             }
           },
           "defaultConfiguration": "development"
