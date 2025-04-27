@@ -1,0 +1,91 @@
+/* Estilos personalizados para el componente */
+.rating-box {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-top: 3px solid #00d1b2;
+  }
+  
+  /* Estilo específico para el título "Valorar Servicio" */
+  .rating-box .title.has-text-primary {
+    color: #000000 !important; /* Negro puro */
+  }
+  
+  /* Estilo para el icono de estrella del título */
+  .rating-box .title .icon {
+    color: #ebe818 !important; /* Negro puro para el icono también */
+  }
+  
+  .hr {
+    background-color: #00d1b2;
+    height: 2px;
+    margin: 1rem 0 2rem 0;
+    opacity: 0.5;
+  }
+  
+  .star {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .star:hover {
+    transform: scale(1.2);
+  }
+  
+  .textarea {
+    min-height: 120px;
+    resize: vertical;
+    transition: border-color 0.3s;
+  }
+  
+  .textarea:focus {
+    border-color: #00d1b2;
+    box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25);
+  }
+  
+  .button.is-primary {
+    font-weight: 600;
+    padding-left: 2em;
+    padding-right: 2em;
+    transition: all 0.3s;
+  }
+  
+  .button.is-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 10px rgba(0, 209, 178, 0.3);
+  }
+  
+  .notification {
+    border-left: 4px solid #00d1b2;
+    animation: fadeIn 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Estilo de respaldo para el spinner por si Bulma no carga */
+  .is-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  .is-loading::after {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    border-top-color: currentColor;
+    border-left-color: currentColor;
+    animation: spinAround 0.5s infinite linear;
+    margin-left: 0.5em;
+  }
+  @keyframes spinAround {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }

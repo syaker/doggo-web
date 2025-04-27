@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+<section class="section">
+  <div class="container">
+    <div class="box notificaciones-box">
+      <h1 class="title has-text-centered">
+        <span class="icon">
+          <i class="fas fa-bell"></i>
+        </span>
+        <span>Configuración de Notificaciones</span>
+      </h1>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="config.notifCitas">
+            Recibir notificaciones cuando se agenda, modifica o cancela una cita
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="config.notifMensajes">
+            Recibir notificaciones de nuevos mensajes en el chat
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Tipo de notificación</label>
+        <div class="control">
+          <div class="select is-fullwidth">
+            <select [(ngModel)]="config.tipoNotificacion">
+              <option value="email">Email</option>
+              <option value="push">Notificación Push</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-centered mt-5">
+        <div class="control">
+          <button class="button is-primary" 
+                  (click)="guardarConfiguracion()"
+                  [class.is-loading]="isLoading">
+            <span class="icon">
+              <i class="fas fa-save"></i>
+            </span>
+            <span>Guardar configuración</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="mostrarConfirmacion" class="notification is-success mt-4">
+        <button class="delete" (click)="mostrarConfirmacion = false"></button>
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-check-circle"></i>
+          </span>
+          <span>¡Configuración guardada con éxito!</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

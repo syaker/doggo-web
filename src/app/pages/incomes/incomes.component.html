@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte de Ingresos - Cuidador de Mascota</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ 
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <div class="reporte-wrapper">
+        <h1 class="title has-text-centered">Reporte de Ingresos - Cuidador de Mascota </h1>
+
+        <div class="field">
+          <label class="label">Selecciona el mes</label>
+          <div class="control">
+            <input class="input" type="month" id="mesSeleccionado">
+          </div>
+        </div>
+
+        <div class="box mt-4">
+          <p><strong>Total Ganado:</strong> S/ <span id="totalIngresos">0.00</span></p>
+          <p><strong>Número de Citas:</strong> <span id="numeroCitas">0</span></p>
+        </div>
+
+        <div class="buttons is-centered mt-3">
+          <button class="button is-link" onclick="generarPDF()">Descargar PDF</button>
+          <button class="button is-primary" onclick="generarExcel()">Descargar Excel</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!-- Añade estos links en tu index.html para mejor performance -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<section class="section">
+  <div class="container">
+    <div class="box rating-box">
+      <h1 class="title has-text-centered has-text-primary">
+        <span class="icon">
+          <i class="fas fa-star"></i>
+        </span>
+        <span> Valorar Servicio</span>
+      </h1>
+      <hr class="hr">
+
+      <div class="field">
+        <label class="label has-text-weight-semibold">
+          <span class="icon">
+            <i class="fas fa-star-half-alt"></i>
+          </span>
+          <span>Puntuación</span>
+        </label>
+        <div class="stars is-flex is-justify-content-center">
+          <span *ngFor="let star of [1,2,3,4,5]" 
+                class="star mx-2"
+                [class.has-text-warning]="(hoverRating || selectedRating) >= star"
+                [class.has-text-grey-light]="(hoverRating || selectedRating) < star"
+                (click)="setRating(star)"
+                (mouseenter)="setHoverRating(star)"
+                (mouseleave)="resetHoverRating()">
+            <span class="icon is-large">
+              <i class="fas fa-star fa-2x"></i>
+            </span>
+          </span>
+        </div>
+        <p class="help has-text-centered mt-2">
+          <span class="tag is-primary is-light">
+            <span class="icon">
+              <i class="fas fa-info-circle"></i>
+            </span>
+            <span>Seleccionaste: {{selectedRating}} {{selectedRating === 1 ? 'estrella' : 'estrellas'}}</span>
+          </span>
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label has-text-weight-semibold">
+          <span class="icon">
+            <i class="fas fa-comment"></i>
+          </span>
+          <span>Comentario</span>
+        </label>
+        <div class="control">
+          <textarea class="textarea has-fixed-size" 
+                    [(ngModel)]="comment"
+                    placeholder="Describe tu experiencia en detalle..."
+                    rows="5"></textarea>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-centered mt-5">
+        <div class="control">
+          <button class="button is-primary is-medium" 
+                  (click)="submitRating()"
+                  [disabled]="selectedRating === 0"
+                  [class.is-loading]="isLoading">
+            <span class="icon">
+              <i class="fas fa-paper-plane"></i>
+            </span>
+            <span>Enviar Valoración</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showConfirmation" class="notification is-success mt-5">
+        <button class="delete" (click)="showConfirmation = false"></button>
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-check-circle"></i>
+          </span>
+          <span>¡Gracias por tu valoración! Tu opinión nos ayuda a mejorar.</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

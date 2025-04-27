@@ -1,0 +1,62 @@
+.notificaciones-box {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #00d1b2;
+  }
+  
+  .notification {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .checkbox {
+    transition: all 0.2s ease;
+  }
+  
+  .checkbox:hover {
+    color: #3273dc;
+  }
+  
+  .select select {
+    width: 100%;
+  }
+  
+  .button.is-primary {
+    font-weight: 600;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+  }
+  
+  /* Estilo para el título */
+  .title .icon {
+    margin-right: 0.5em;
+  }
+  
+  /* Estilo de respaldo para el spinner */
+  .is-loading {
+    position: relative;
+    pointer-events: none;
+  }
+  .is-loading::after {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    border-top-color: currentColor;
+    border-left-color: currentColor;
+    animation: spinAround 0.5s infinite linear;
+    margin-left: 0.5em;
+  }
+  @keyframes spinAround {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
