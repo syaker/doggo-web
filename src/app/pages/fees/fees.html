@@ -1,1 +1,55 @@
-<div class="container"></div>
+<basic-layout>
+  <div class="max-w-4xl mx-auto p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div
+        class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+      >
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">Tarifa Regular</h2>
+
+          <div class="space-y-4">
+            <button
+              class="w-full py-3 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors duration-200 flex justify-between items-center"
+            >
+              <span>Por hora</span>
+              <span class="font-bold">S/ 20.00</span>
+            </button>
+
+            <button
+              class="w-full py-3 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors duration-200 flex justify-between items-center"
+            >
+              <span>Por día completo</span>
+              <span class="font-bold">S/ 100.00</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-md overflow-hidden border-2 border-pink-500 hover:shadow-lg transition-shadow duration-300 relative"
+      >
+        <div class="p-6">
+          <div class="mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Tarifa Especial</h2>
+          </div>
+
+          <div class="space-y-4">
+            <button
+              class="w-full py-3 px-4 bg-pink-50 hover:bg-pink-100 text-pink-700 font-medium rounded-lg transition-colors duration-200 flex justify-between items-center"
+            >
+              <span>Por hora</span>
+              <span class="font-bold">S/ 15.00</span>
+            </button>
+
+            <button
+              class="w-full py-3 px-4 bg-pink-50 hover:bg-pink-100 text-pink-700 font-medium rounded-lg transition-colors duration-200 flex justify-between items-center"
+            >
+              <span>Por día completo</span>
+              <span class="font-bold">S/ 80.00</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</basic-layout>

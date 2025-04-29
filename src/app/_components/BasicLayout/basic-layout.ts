@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavBar } from '../NavBar/navbar';
+import { NavBarComponent } from '../NavBar/nav-bar';
 
 @Component({
   standalone: true,
   selector: 'basic-layout',
   templateUrl: 'basic-layout.html',
   styleUrl: 'basic-layout.css',
-  imports: [NavBar],
+  imports: [NavBarComponent],
 })
 export class BasicLayout {}

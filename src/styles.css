@@ -1,1 +1,42 @@
 @import 'tailwindcss';
+
+.contained-button {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  text-align: center;
+  border: 0;
+  padding: 7px 16px;
+  min-height: 36px;
+  min-width: 36px;
+  color: #ffffff;
+  background: #0eae7c;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px, rgba(0, 0, 0, 0.2) 0px -1px 0px 0px inset;
+  :hover {
+    background: #006e52;
+  }
+}
+
+.outlined-button {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #0eae7c;
+  padding: 7px 16px;
+  min-height: 36px;
+  min-width: 36px;
+  color: #0eae7c;
+  background: #ffffff;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+  :hover {
+    background: #f6f6f7;
+    outline: 1px solid transparent;
+  }
+}

@@ -1,3 +1,40 @@
 <basic-layout>
-  <div>Pet sitters page to see all those sitters</div>
+  <div class="sitters-grid">
+    <div *ngFor="let sitter of sitters" class="sitter-card-wrapper">
+      <div class="sitter-card">
+        <div class="sitter-image-container">
+          <img
+            [src]="sitter.imageUrl || defaultSitterImage"
+            alt="{{sitter.name}}"
+            class="sitter-image"
+          />
+          <div class="rating-badge">
+            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              />
+            </svg>
+            <span class="rating-text">{{sitter.averageRating | number:'1.1-1'}}</span>
+          </div>
+        </div>
+
+        <div class="sitter-info">
+          <h3 class="sitter-name">{{sitter.name}}</h3>
+          <p class="sitter-experience">
+            <span class="experience-years">{{sitter.yearsOfExperience}}</span> años de experiencia
+          </p>
+          <div class="sitter-specialties">
+            <span *ngFor="let specialty of sitter.specialties" class="specialty-tag">
+              {{specialty}}
+            </span>
+          </div>
+        </div>
+
+        <div class="sitter-actions">
+          <button (click)="handleModal(sitter)" class="contained-button">Programar Cita</button>
+          <button routerLink="/chat" class="outlined-button">Contactar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </basic-layout>

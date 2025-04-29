@@ -1,6 +1,10 @@
-<div>
-  <nav-bar></nav-bar>
-  <div class="p-4 md:p-10 lg:p-10">
-    <ng-content />
+<div class="flex flex-col min-h-screen">
+  <nav-bar class="fixed top-0 w-full z-50"></nav-bar>
+  <div class="flex-1 grid grid-cols-6 mt-14">
+    <div class="hidden md:block"></div>
+    <main class="col-span-6 md:col-span-4 lg:col-span-4">
+      <ng-content />
+    </main>
+    <div class="hidden md:block"></div>
   </div>
 </div>

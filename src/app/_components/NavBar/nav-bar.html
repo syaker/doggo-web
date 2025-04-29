@@ -1,0 +1,84 @@
+<div class="w-full h-14 shadow-md fixed top-0 z-50 bg-[#0eae7c]">
+  <nav class="container mx-auto px-4 h-full flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="/assets/logo.png" width="50" height="50" />
+      <div class="text-xl font-bold text-white">Doggo</div>
+    </div>
+
+    <button class="md:hidden focus:outline-none cursor-pointer" (click)="toggleMenu()">
+      <div class="w-6 flex flex-col items-center">
+        <span
+          class="block h-0.5 w-6 bg-gray-800 rounded transition-all duration-300"
+          [class.transform]="isOpen"
+          [class.rotate-45]="isOpen"
+          [class.translate-y-1.5]="isOpen"
+        ></span>
+        <span
+          class="block h-0.5 w-6 bg-gray-800 rounded mt-1.5 transition-all duration-300"
+          [class.opacity-0]="isOpen"
+        ></span>
+        <span
+          class="block h-0.5 w-6 bg-gray-800 rounded mt-1.5 transition-all duration-300"
+          [class.transform]="isOpen"
+          [class.-rotate-45]="isOpen"
+          [class.-translate-y-1.5]="isOpen"
+        ></span>
+      </div>
+    </button>
+
+    <ul class="hidden md:flex space-x-8">
+      <li>
+        <a class="text-white hover:text-[#0eae7c] transition cursor-pointer" routerLink="/fees"
+          >Tarifas</a
+        >
+      </li>
+      <li>
+        <a
+          class="text-white hover:text-[#0eae7c] transition cursor-pointer"
+          routerLink="/pet-sitters"
+          >Cuidadores</a
+        >
+      </li>
+      <li>
+        <a class="text-white hover:text-[#0eae7c] transition cursor-pointer" routerLink="/schedule"
+          >Agenda</a
+        >
+      </li>
+    </ul>
+  </nav>
+
+  <div
+    class="md:hidden fixed top-14 left-0 w-full bg-white shadow-lg overflow-hidden transition-all duration-300 ease-in-out"
+    [class.h-0]="!isOpen"
+    [class.h-auto]="isOpen"
+    [class.py-0]="!isOpen"
+    [class.py-2]="isOpen"
+  >
+    <ul class="px-4 space-y-3">
+      <li>
+        <a
+          class="block py-2 text-gray-800 hover:text-blue-600"
+          routerLink="/fees"
+          (click)="toggleMenu()"
+          >Tarifas</a
+        >
+      </li>
+      <li>
+        <a
+          class="block py-2 text-gray-800 hover:text-blue-600"
+          routerLink="/pet-sitters"
+          (click)="toggleMenu()"
+          >Cuidadores</a
+        >
+      </li>
+      <li>
+        <a
+          class="block py-2 text-gray-800 hover:text-blue-600"
+          routerLink="/schedule"
+          (click)="toggleMenu()"
+          >Agenda</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
