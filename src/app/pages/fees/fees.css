@@ -1,49 +1,133 @@
-.container {
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+}
+.card {
+  background-color: white;
+  max-width: 500px;
+  margin: auto;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.chat-encabezado {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+  background: #0eae7c;
+  height: 60px;
+  font-size: 24px;
+  padding: 21.5px 0;
   display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  top: 15px;
+  left: 15px;
+  padding: 5px;
+}
+h2 {
+  color: #2b2b2b;
+  margin-top: 25px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.pricing-container {
+  display: flex;
+  justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 50vw;
-  height: auto;
-  border: red solid 4px;
-  padding: 2rem;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.header-container {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
+.pricing-card {
+  flex: 1;
+  min-width: 250px;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.pricing-card.special {
+  box-shadow: 0 2px 4pxrgba (0, 0, 0, 0.1);
+}
+
+.price-button {
+  display: block;
   width: 100%;
-  margin-bottom: 1rem;
-}
-
-.header-container p {
+  padding: 12px;
+  margin: 15px 0;
+  background: #fefced;
+  color: #2a7d5b;
+  border: none;
+  border-radius: 5px;
   font-size: 20px;
-  text-align: justify;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.students-container {
+.price-button:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #fefced;
+}
+
+.price-button-special:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.price-button-special {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  background: #0eae7c;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.price-button.special:hover {
+  background: #d35400;
+}
+
+.offer-badge {
+  background: #e67e22;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.price-header {
   display: flex;
-  align-items: start;
-  justify-content: start;
-  width: 80%;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.students-container div {
-  width: 10rem;
-}
-
-.student {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-}
-
-.student {
-  text-align: center;
-  font-size: 15px;
 }

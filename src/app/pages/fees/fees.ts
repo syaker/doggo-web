@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { BasicLayout } from '../../_components/BasicLayout/basic-layout';
 
 @Component({
-  standalone: true,
-  selector: 'login',
-  templateUrl: 'login.html',
-  styleUrl: 'login.css',
+  selector: 'fees',
+  templateUrl: 'fees.html',
+  styleUrl: 'fees.css',
+  imports: [BasicLayout],
 })
-export class Login {}
+export class Fees {}
