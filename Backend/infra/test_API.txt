@@ -1,0 +1,17 @@
+export API_URL="https://1tbgke5043.execute-api.eu-west-1.amazonaws.com/api"
+
+GET:
+curl -X GET $API_URL/messages
+
+POST: 
+curl -X POST $API_URL \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Test Item", "description": "This is a test item"}'
+
+UPDATE:
+curl -X PUT $API_URL \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Updated Item", "description": "This item has been updated"}'
+
+DELETE:
+curl -X DELETE $API_URL
