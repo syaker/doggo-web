@@ -4,7 +4,5 @@ terraform {
     key     = "tfstate/dweb-doggo.tfstate"
     region  = "eu-west-1"
     encrypt = true
-    # opcional
-    # dynamodb_table = "terraform_state"
   }
 }
