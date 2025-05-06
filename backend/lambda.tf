@@ -40,13 +40,13 @@ resource "aws_lambda_function" "login_lambda" {
 
 # Lambda function register_lambda
 resource "aws_lambda_function" "register_lambda" {
-  filename          = "lambda_function.zip"
+  filename          = "register_function.zip"
   function_name     = "register_lambda"
   role              = aws_iam_role.lambda_role.arn
   handler           = "index.handler"
   runtime           = "python3.9"
 
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  source_code_hash = filebase64sha256("register_function.zip")
 }
 
 # Lambda function service_lambda
