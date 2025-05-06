@@ -15,10 +15,24 @@ resource "aws_api_gateway_resource" "login" {
   path_part   = "login"
 }
 
-# GET method
+# POST method
 resource "aws_api_gateway_method" "get_login" {
   rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
   resource_id   = aws_api_gateway_resource.login.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+# API Gateway resource register
+resource "aws_api_gateway_resource" "register" {
+  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
+  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
+  path_part   = "register"
+}
+# POST method
+resource "aws_api_gateway_method" "post_register" {
+  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
+  resource_id   = aws_api_gateway_resource.register.id
   http_method   = "POST"
   authorization = "NONE"
 }
@@ -104,6 +118,17 @@ resource "aws_api_gateway_integration" "lambda_get_login" {
   uri                    = aws_lambda_function.login_lambda.invoke_arn
 }
 
+# Lambda integration for POST register
+resource "aws_api_gateway_integration" "lambda_post_register" {
+  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
+  resource_id = aws_api_gateway_resource.register.id
+  http_method = aws_api_gateway_method.post_register.http_method
+
+  integration_http_method = "POST"
+  type                   = "AWS_PROXY"
+  uri                    = aws_lambda_function.register_lambda.invoke_arn
+}
+
 # Lambda integration for GET services
 resource "aws_api_gateway_integration" "lambda_get_services" {
   rest_api_id = aws_api_gateway_rest_api.doggo-api.id
@@ -175,6 +200,7 @@ resource "aws_api_gateway_deployment" "crud_deployment" {
 
     redeployment = sha1(jsonencode([
       aws_api_gateway_integration.lambda_get_login.id,
+      aws_api_gateway_integration.lambda_post_register.id,
       aws_api_gateway_integration.lambda_post_messages.id,
       aws_api_gateway_integration.lambda_get_messages.id,
       aws_api_gateway_integration.lambda_get_services.id,
@@ -183,6 +209,7 @@ resource "aws_api_gateway_deployment" "crud_deployment" {
       aws_api_gateway_integration.lambda_post_schedule.id,
 
       aws_api_gateway_method.get_login.id,
+      aws_api_gateway_method.post_register.id,
       aws_api_gateway_method.post_messages.id,
       aws_api_gateway_method.get_messages.id,
       aws_api_gateway_method.get_services.id,
@@ -191,10 +218,12 @@ resource "aws_api_gateway_deployment" "crud_deployment" {
       aws_api_gateway_method.post_schedule.id,
 
       aws_api_gateway_resource.login.id,
+      aws_api_gateway_resource.register.id,
       aws_api_gateway_resource.messages.id,
       aws_api_gateway_resource.services.id,
       aws_api_gateway_resource.sitters.id,
       aws_api_gateway_resource.schedule.id,
+
     ]))
   }
 
