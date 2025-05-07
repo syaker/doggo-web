@@ -13,11 +13,10 @@ module "db" {
 
   db_name  = "doggodb"
   username = "admin"
-  password = "doggodb99*99*99"
   port     = "3306"
 
-  manage_master_user_password = false
-  iam_database_authentication_enabled = false
+  manage_master_user_password = true
+  iam_database_authentication_enabled = true
 
   vpc_security_group_ids = ["sg-07b6f0d852779c6d3"]
 
