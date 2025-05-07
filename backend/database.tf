@@ -1,8 +1,8 @@
 module "db" {
-  source = "terraform-aws-modules/rds/aws"
+  source  = "terraform-aws-modules/rds/aws"
+  version = "6.12.0"
 
-  identifier = "doggodb"
-
+  identifier        = "doggodb"
   engine            = "mysql"
   engine_version    = "8.4.4"
   instance_class    = "db.t3.small"
