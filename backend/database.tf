@@ -15,7 +15,7 @@ module "db" {
   username = "admin"
   port     = "3306"
 
-  manage_master_user_password = true
+  manage_master_user_password         = true
   iam_database_authentication_enabled = true
 
   vpc_security_group_ids = ["sg-07b6f0d852779c6d3"]
