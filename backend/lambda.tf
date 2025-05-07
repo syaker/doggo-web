@@ -29,63 +29,63 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 
 # Lambda function login_lambda
 resource "aws_lambda_function" "login_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "login_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  filename      = "lambda_function.zip"
+  function_name = "login_lambda"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "index.handler"
+  runtime       = "python3.10"
 
   source_code_hash = filebase64sha256("lambda_function.zip")
 }
 
 # Lambda function register_lambda
 resource "aws_lambda_function" "register_lambda" {
-  filename          = "register_function.zip"
-  function_name     = "register_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  filename      = "register_function.zip"
+  function_name = "register_lambda"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "index.handler"
+  runtime       = "python3.10"
 
   source_code_hash = filebase64sha256("register_function.zip")
 }
 
 # Lambda function service_lambda
 resource "aws_lambda_function" "service_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "service_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  filename         = "lambda_function.zip"
+  function_name    = "service_lambda"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "index.handler"
+  runtime          = "python3.10"
   source_code_hash = filebase64sha256("lambda_function.zip")
 }
 
 # Lambda function message_lambda
 resource "aws_lambda_function" "message_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "message_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  filename         = "lambda_function.zip"
+  function_name    = "message_lambda"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "index.handler"
+  runtime          = "python3.10"
   source_code_hash = filebase64sha256("lambda_function.zip")
 }
 
 # Lambda function sitters_lambda
 resource "aws_lambda_function" "sitters_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "sitters_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  filename         = "lambda_function.zip"
+  function_name    = "sitters_lambda"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "index.handler"
+  runtime          = "python3.10"
   source_code_hash = filebase64sha256("lambda_function.zip")
 }
 
 # Lambda function schedule_lambda
 resource "aws_lambda_function" "schedule_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "schedule_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  filename         = "lambda_function.zip"
+  function_name    = "schedule_lambda"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "index.handler"
+  runtime          = "python3.10"
   source_code_hash = filebase64sha256("lambda_function.zip")
 }
 ##################################################################
