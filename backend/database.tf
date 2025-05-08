@@ -2,18 +2,18 @@ module "db" {
   source  = "terraform-aws-modules/rds/aws"
   version = "6.12.0"
 
-  identifier        = "doggodb"
-  engine            = "mysql"
-  engine_version    = "8.4.4"
-  instance_class    = "db.t3.small"
-  allocated_storage = 10
+  identifier        = var.rds_identifier
+  engine            = var.rds_engine
+  engine_version    = var.rds_engine_version
+  instance_class    = var.rds_instance_class
+  allocated_storage = var.rds_allocated_storage
 
   allow_major_version_upgrade = true
   publicly_accessible         = true
 
-  db_name  = "doggodb"
-  username = "admin"
-  port     = "3306"
+  db_name  = var.rds_db_name
+  username = var.rds_username
+  port     = var.rds_port
 
   manage_master_user_password         = true
   iam_database_authentication_enabled = true
@@ -36,9 +36,9 @@ module "db" {
   create_db_subnet_group = true
   subnet_ids             = ["subnet-0618296973e109d84", "subnet-0de8fd05f46371b3e"]
 
-  family = "mysql8.4"
+  family = var.rds_family
 
-  major_engine_version = "8.4"
+  major_engine_version = var.rds_major_engine_version
 
   deletion_protection = false
 
