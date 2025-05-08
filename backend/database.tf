@@ -16,7 +16,6 @@ module "db" {
   port     = var.rds_port
 
   manage_master_user_password         = true
-  iam_database_authentication_enabled = true
 
   vpc_security_group_ids = ["sg-07b6f0d852779c6d3"]
 
