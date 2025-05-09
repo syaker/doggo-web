@@ -1,34 +1,40 @@
 locals {
   lambda_functions = {
-    login-lambda = {
+    "doggo-login-lambda" = {
       handler     = "index.lambda_handler"
       runtime     = "python3.13"
       source_path = "./src/function/login"
+      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-login-lambda:invoke"
     },
-    register-lambda = {
+    "doggo-register-lambda" = {
       handler     = "index.lambda_handler"
       runtime     = "python3.13"
       source_path = "./src/function/register"
+      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-register-lambda:invoke"
     },
-    service-lambda = {
+    "doggo-service-lambda" = {
       handler     = "index.lambda_handler"
       runtime     = "python3.13"
       source_path = "./src/function/service"
+      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-service-lambda:invoke"
     },
-    message-lambda = {
+    "doggo-message-lambda" = {
       handler     = "index.lambda_handler"
       runtime     = "python3.13"
       source_path = "./src/function/message"
+      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-message-lambda:invoke"
     },
-    sitters-lambda = {
+    "doggo-sitters-lambda" = {
       handler     = "index.lambda_handler"
       runtime     = "python3.13"
       source_path = "./src/function/sitters"
+      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-sitters-lambda:invoke"
     },
-    schedule-lambda = {
+    "doggo-schedule-lambda" = {
       handler     = "index.lambda_handler"
       runtime     = "python3.13"
       source_path = "./src/function/schedule"
+      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-schedule-lambda:invoke"
     }
   }
 

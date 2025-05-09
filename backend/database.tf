@@ -15,7 +15,7 @@ module "db" {
   username = var.rds_username
   port     = var.rds_port
 
-  manage_master_user_password         = true
+  manage_master_user_password = true
 
   vpc_security_group_ids = ["sg-07b6f0d852779c6d3"]
 
@@ -33,7 +33,7 @@ module "db" {
   }
 
   create_db_subnet_group = true
-  subnet_ids             = ["subnet-0618296973e109d84", "subnet-0de8fd05f46371b3e"]
+  subnet_ids             = ["subnet-0dfaf74a4495dfd9c", "subnet-0de8fd05f46371b3e"]
 
   family = var.rds_family
 
