@@ -8,9 +8,9 @@ locals {
       handler     = "index.handler"
       source_path = "./src/function/register"
     },
-    "service" = {
+    "services" = {
       handler     = "index.handler"
-      source_path = "./src/function/service"
+      source_path = "./src/function/services"
     },
     "message-send" = {
       handler     = "index.handler"

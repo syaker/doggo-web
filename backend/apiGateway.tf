@@ -47,7 +47,7 @@ module "api" {
           description = "Obtiene los servicios y la promo del dia para mostrarla en el home"
           x-amazon-apigateway-integration = {
             httpMethod = "POST"
-            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-service-obtain/invocations"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-services/invocations"
             timeoutInMillis     = 29000
             type                = "AWS_PROXY"
           }
