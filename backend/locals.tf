@@ -1,40 +1,36 @@
 locals {
   lambda_functions = {
-    "doggo-login-lambda" = {
-      handler     = "index.lambda_handler"
-      runtime     = "python3.13"
+    "login" = {
+      handler     = "index.handler"
       source_path = "./src/function/login"
-      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-login-lambda:invoke"
     },
-    "doggo-register-lambda" = {
-      handler     = "index.lambda_handler"
-      runtime     = "python3.13"
+    "register" = {
+      handler     = "index.handler"
       source_path = "./src/function/register"
-      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-register-lambda:invoke"
     },
-    "doggo-service-lambda" = {
-      handler     = "index.lambda_handler"
-      runtime     = "python3.13"
+    "service" = {
+      handler     = "index.handler"
       source_path = "./src/function/service"
-      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-service-lambda:invoke"
     },
-    "doggo-message-lambda" = {
-      handler     = "index.lambda_handler"
-      runtime     = "python3.13"
-      source_path = "./src/function/message"
-      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-message-lambda:invoke"
+    "message-send" = {
+      handler     = "index.handler"
+      source_path = "./src/function/message_send"
     },
-    "doggo-sitters-lambda" = {
-      handler     = "index.lambda_handler"
-      runtime     = "python3.13"
+    "message-obtain" = {
+      handler     = "index.handler"
+      source_path = "./src/function/message_obtain"
+    },
+    "sitters" = {
+      handler     = "index.handler"
       source_path = "./src/function/sitters"
-      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-sitters-lambda:invoke"
     },
-    "doggo-schedule-lambda" = {
-      handler     = "index.lambda_handler"
-      runtime     = "python3.13"
+    "schedule" = {
+      handler     = "index.handler"
       source_path = "./src/function/schedule"
-      invoke_arn  = "arn:aws:lambda:eu-west-1:611415883004:function:doggo-schedule-lambda:invoke"
+    },
+    "schedule-obtain" = {
+      handler     = "index.handler"
+      source_path = "./src/function/schedule_obtain"
     }
   }
 
@@ -44,12 +40,6 @@ locals {
       description         = "Layer for PyMySQL"
       compatible_runtimes = ["python3.13"]
       source_path         = "./src/function_layer/PyMySQL-1.1.1.zip"
-    },
-    PySQLServer = {
-      layer_name          = "PySQLServer-1.0.0"
-      description         = "Layer for PySQLServer"
-      compatible_runtimes = ["python3.13"]
-      source_path         = "./src/function_layer/PySQLServer-1.0.0.zip"
     }
   }
 

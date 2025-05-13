@@ -10,7 +10,7 @@ module "lambda_functions" {
   function_name = "doggo-${each.key}"
   description   = "Lambda function for ${each.key}"
   handler       = each.value.handler
-  runtime       = each.value.runtime
+  runtime       = "python3.13"
 
   source_path = each.value.source_path
 
@@ -20,7 +20,7 @@ module "lambda_functions" {
   allowed_triggers = {
     APIGatewayAny = {
       service    = "apigateway"
-      source_arn = "${module.api.api_arn}/*/*/*"
+      source_arn = "${module.api.execution_arn}/*/*/*"
     }
   }
 }

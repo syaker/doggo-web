@@ -1,22 +1,35 @@
-###################################################################
-# Outputs
-###################################################################
-
-output "api_url" {
-  description = "URL de la API Gateway"
-  value       = "https://${aws_api_gateway_rest_api.apigtw.id}.execute-api.${var.region}.amazonaws.com/api"
+output "execution_arn" {
+  value = try(aws_api_gateway_rest_api.rest_api[0].execution_arn, "")
 }
 
 output "api_id" {
-  description = "ID de la API Gateway"
-  value       = aws_api_gateway_rest_api.apigtw.id
+  value = try(aws_api_gateway_rest_api.rest_api[0].id, "")
 }
 
-output "api_stage_url" {
-  description = "URL de acceso al stage"
-  value       = "https://${aws_api_gateway_rest_api.apigtw.id}.execute-api.${var.region}.amazonaws.com/api"
+output "api_root_resource_id" {
+  value = try(aws_api_gateway_rest_api.rest_api[0].root_resource_id, "")
 }
-output "api_arn" {
-  description = "ARN de la API Gateway"
-  value       = aws_api_gateway_rest_api.apigtw.arn
+
+output "stage_arn" {
+  value = try(aws_api_gateway_stage.api_stage[0].arn, "")
+}
+
+output "cloudfront_domain_name" {
+  value = try(aws_api_gateway_domain_name.api_domain_namee[0].cloudfront_domain_name, "")
+}
+
+output "cloudfront_zone_id" {
+  value = try(aws_api_gateway_domain_name.api_domain_namee[0].cloudfront_zone_id, "")
+}
+
+output "regional_domain_name" {
+  value = try(aws_api_gateway_domain_name.api_domain_namee[0].regional_domain_name, "")
+}
+
+output "regional_zone_id" {
+  value = try(aws_api_gateway_domain_name.api_domain_namee[0].regional_zone_id, "")
+}
+
+output "domain_name" {
+  value = try(aws_api_gateway_domain_name.api_domain_namee[0].domain_name, "")
 }

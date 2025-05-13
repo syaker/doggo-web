@@ -1,5 +1,8 @@
 # GLOBAL
 variable "region" {}
+variable "env" {}
+variable "project" {}
+variable "account_id" {}
 
 # RDS
 variable "rds_identifier" {}
@@ -12,6 +15,3 @@ variable "rds_username" {}
 variable "rds_port" {}
 variable "rds_family" {}
 variable "rds_major_engine_version" {}
-
-# API
-variable "api_name" {}
