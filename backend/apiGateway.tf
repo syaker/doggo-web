@@ -1,242 +1,120 @@
-###################################################################
-# API Gateway
-###################################################################
-resource "aws_api_gateway_rest_api" "doggo-api" {
-  name        = "doggo-api"
-  description = "Doggo API Gateway"
-}
-###################################################################
-## resource
-###################################################################
-# API Gateway resource Login
-resource "aws_api_gateway_resource" "login" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
-  path_part   = "login"
-}
+module "api" {
+  source                          = "./modules/apigtw"
+  create_rest_api                 = true
+  rest_api_name                   = "doggo-api"
+  endpoint_type                   = "REGIONAL"
+  logging_level                   = "ERROR"
+  stage                           = "api"
+  cloudwatch_log_group_name       = "doggo-api-logs"
+  default_throttling_burst_limit  = 100
+  default_throttling_rate_limit   = 300
+  timeout_milliseconds            = [28800]
 
-# POST method
-resource "aws_api_gateway_method" "get_login" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.login.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
+  openapi_config = {
+    openapi = "3.0.1"
+    info = {
+      title   = "${var.env}-${var.project}-api"
+      version = "1.0"
+    }
+    paths = {
+      "/login" = {
+        post = {
+          summary = "Login"
+          description = "Para iniciar sesión con correo y contraseña"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-login/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+      }
+      "/register" = {
+        post = {
+          summary = "Register"
+          description = "Registrar usuario con su email, contraseña y un checkbox para aceptar terminos y condiciones"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-register/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+      }
+      "/services" = {
+        get = {
+          summary = "Obtener servicios"
+          description = "Obtiene los servicios y la promo del dia para mostrarla en el home"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-services/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+      }
+      "/messages" = {
+        get = {
+          summary = "Obtener mensajes"
+          description = "Obtener los mensajes del usuario"
 
-# API Gateway resource register
-resource "aws_api_gateway_resource" "register" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
-  path_part   = "register"
-}
-# POST method
-resource "aws_api_gateway_method" "post_register" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.register.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-
-# API Gateway resource services
-resource "aws_api_gateway_resource" "services" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
-  path_part   = "services"
-}
-# GET method
-resource "aws_api_gateway_method" "get_services" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.services.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-
-# API Gateway resource messages
-resource "aws_api_gateway_resource" "messages" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
-  path_part   = "messages"
-}
-# POST method
-resource "aws_api_gateway_method" "post_messages" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.messages.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-# GET method
-resource "aws_api_gateway_method" "get_messages" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.messages.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-# API Gateway resource sitters
-resource "aws_api_gateway_resource" "sitters" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
-  path_part   = "sitters"
-}
-# GET method
-resource "aws_api_gateway_method" "get_sitters" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.sitters.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-# API Gateway resource /schedule/{sitterId}
-resource "aws_api_gateway_resource" "schedule" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  parent_id   = aws_api_gateway_rest_api.doggo-api.root_resource_id
-  path_part   = "schedule"
-}
-# GET method
-resource "aws_api_gateway_method" "get_schedule" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.schedule.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-# POST method
-resource "aws_api_gateway_method" "post_schedule" {
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  resource_id   = aws_api_gateway_resource.schedule.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-###################################################################
-## integration
-###################################################################
-# Lambda integration for GET login
-resource "aws_api_gateway_integration" "lambda_get_login" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.login.id
-  http_method = aws_api_gateway_method.get_login.http_method
-  
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.login_lambda.invoke_arn
-}
-
-# Lambda integration for POST register
-resource "aws_api_gateway_integration" "lambda_post_register" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.register.id
-  http_method = aws_api_gateway_method.post_register.http_method
-
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.register_lambda.invoke_arn
-}
-
-# Lambda integration for GET services
-resource "aws_api_gateway_integration" "lambda_get_services" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.services.id
-  http_method = aws_api_gateway_method.get_services.http_method
-
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.service_lambda.invoke_arn
-}
-
-# Lambda integration for GET messages
-resource "aws_api_gateway_integration" "lambda_get_messages" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.messages.id
-  http_method = aws_api_gateway_method.get_messages.http_method
-  
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.message_lambda.invoke_arn
-}
-
-# Lambda integration for POST messages
-resource "aws_api_gateway_integration" "lambda_post_messages" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.messages.id
-  http_method = aws_api_gateway_method.post_messages.http_method
-  
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.message_lambda.invoke_arn
-}
-
-# Lambda integration for GET sitters
-resource "aws_api_gateway_integration" "lambda_get_sitters" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.sitters.id
-  http_method = aws_api_gateway_method.get_sitters.http_method
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.sitters_lambda.invoke_arn
-}
-
-# Lambda integration for GET schedule
-resource "aws_api_gateway_integration" "lambda_get_schedule" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.schedule.id
-  http_method = aws_api_gateway_method.get_schedule.http_method
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.schedule_lambda.invoke_arn
-}
-# Lambda integration for POST schedule
-resource "aws_api_gateway_integration" "lambda_post_schedule" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  resource_id = aws_api_gateway_resource.schedule.id
-  http_method = aws_api_gateway_method.post_schedule.http_method
-  integration_http_method = "POST"
-  type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.schedule_lambda.invoke_arn
-}
-
-##################################################################
-# API Gateway deployment
-##################################################################
-resource "aws_api_gateway_deployment" "crud_deployment" {
-  rest_api_id = aws_api_gateway_rest_api.doggo-api.id
-  triggers = {
-
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_integration.lambda_get_login.id,
-      aws_api_gateway_integration.lambda_post_register.id,
-      aws_api_gateway_integration.lambda_post_messages.id,
-      aws_api_gateway_integration.lambda_get_messages.id,
-      aws_api_gateway_integration.lambda_get_services.id,
-      aws_api_gateway_integration.lambda_get_sitters.id,
-      aws_api_gateway_integration.lambda_get_schedule.id,
-      aws_api_gateway_integration.lambda_post_schedule.id,
-
-      aws_api_gateway_method.get_login.id,
-      aws_api_gateway_method.post_register.id,
-      aws_api_gateway_method.post_messages.id,
-      aws_api_gateway_method.get_messages.id,
-      aws_api_gateway_method.get_services.id,
-      aws_api_gateway_method.get_sitters.id,
-      aws_api_gateway_method.get_schedule.id,
-      aws_api_gateway_method.post_schedule.id,
-
-      aws_api_gateway_resource.login.id,
-      aws_api_gateway_resource.register.id,
-      aws_api_gateway_resource.messages.id,
-      aws_api_gateway_resource.services.id,
-      aws_api_gateway_resource.sitters.id,
-      aws_api_gateway_resource.schedule.id,
-
-    ]))
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-message-obtain/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        },
+        post = {
+          summary = "Enviar mensaje"
+          description = "Enviar un mensaje y guardarlo en la base de datos"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-message-send/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+      }
+      "/sitters" = {
+        get = {
+          summary = "Obtener cuidadores"
+          description = "Obtener los cuidadores disponibles"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-sitters/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+      }
+      "/schedule/{sitterId}" = {
+        get = {
+          summary = "Obtener horarios"
+          description = "Obtener agenda disponible del cuidador"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-schedule-obtain/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+        post = {
+          summary = "Agendar horario"
+          description = "Agendar una cita con el cuidador"
+          x-amazon-apigateway-integration = {
+            httpMethod = "POST"
+            uri        = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:611415883004:function:doggo-schedule/invocations"
+            timeoutInMillis     = 29000
+            type                = "AWS_PROXY"
+          }
+        }
+      }
+    }
   }
 
-  lifecycle {
-    create_before_destroy = true
+  resource_tags_mandatory = {
+    ENV          = var.env
   }
+
 }
-##################################################################
-# API Gateway stage
-##################################################################
-resource "aws_api_gateway_stage" "stage" {
-  deployment_id = aws_api_gateway_deployment.crud_deployment.id
-  rest_api_id   = aws_api_gateway_rest_api.doggo-api.id
-  stage_name    = "api"
-}
-##################################################################

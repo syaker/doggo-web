@@ -1,140 +1,40 @@
-#################################################
-# IAM role for Lambda
-#################################################
-resource "aws_iam_role" "lambda_role" {
-  name = "crud_lambda_role"
+module "lambda_functions" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "7.20.2"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
+  for_each = local.lambda_functions
+
+  create_function = true
+
+  publish       = true
+  function_name = "doggo-${each.key}"
+  description   = "Lambda function for ${each.key}"
+  handler       = each.value.handler
+  runtime       = "python3.13"
+
+  source_path = each.value.source_path
+
+  tags = local.tags
+
+  # Lambda Permissions for allowed triggers
+  allowed_triggers = {
+    APIGatewayAny = {
+      service    = "apigateway"
+      source_arn = "${module.api.execution_arn}/*/*/*"
+    }
+  }
 }
 
-# IAM policy for CloudWatch Logs
-resource "aws_iam_role_policy_attachment" "lambda_logs" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-#################################################
-## Lambda function
-#################################################
+module "lambda_layer_local" {
+  source = "terraform-aws-modules/lambda/aws"
 
-# Lambda function login_lambda
-resource "aws_lambda_function" "login_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "login_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  for_each = local.lambda_layers
 
-  source_code_hash = filebase64sha256("lambda_function.zip")
-}
+  create_layer = true
 
-# Lambda function register_lambda
-resource "aws_lambda_function" "register_lambda" {
-  filename          = "register_function.zip"
-  function_name     = "register_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
+  layer_name          = "doggo-${each.key}"
+  description         = each.value.description
+  compatible_runtimes = each.value.compatible_runtimes
 
-  source_code_hash = filebase64sha256("register_function.zip")
-}
-
-# Lambda function service_lambda
-resource "aws_lambda_function" "service_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "service_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
-  source_code_hash = filebase64sha256("lambda_function.zip")
-}
-
-# Lambda function message_lambda
-resource "aws_lambda_function" "message_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "message_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
-  source_code_hash = filebase64sha256("lambda_function.zip")
-}
-
-# Lambda function sitters_lambda
-resource "aws_lambda_function" "sitters_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "sitters_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
-  source_code_hash = filebase64sha256("lambda_function.zip")
-}
-
-# Lambda function schedule_lambda
-resource "aws_lambda_function" "schedule_lambda" {
-  filename          = "lambda_function.zip"
-  function_name     = "schedule_lambda"
-  role              = aws_iam_role.lambda_role.arn
-  handler           = "index.handler"
-  runtime           = "python3.10"
-  source_code_hash = filebase64sha256("lambda_function.zip")
-}
-##################################################################
-# Lambda permission for API Gateway
-##################################################################
-resource "aws_lambda_permission" "login_lambda" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.login_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.doggo-api.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "register_lambda" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.register_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.doggo-api.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "service_lambda" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.service_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.doggo-api.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "message_lambda" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.message_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.doggo-api.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "sitters_lambda" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.sitters_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.doggo-api.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "schedule_lambda" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.schedule_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.doggo-api.execution_arn}/*/*"
+  source_path = each.value.source_path
 }
