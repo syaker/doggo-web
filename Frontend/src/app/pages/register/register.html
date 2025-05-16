@@ -8,11 +8,26 @@
 
         <div class="mt-8 bg-white py-8 px-4 sm:rounded-lg sm:px-10">
             <form class="space-y-6">
+
+
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico*</label>
                     <div class="mt-1">
                         <input id="email" name="email" type="email" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                            placeholder="correo.demo@gmail.com" />
+                    </div>
+                </div>
+
+                <div>
+                    <label for="names" class="block text-sm font-medium text-gray-700">Nombre y Apellidos*</label>
+                    <div class="mt-1 grid grid-cols-2 gap-4">
+                        <input id="names" name="names" type="text" required
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            placeholder="Raul*" />
+                        <input id="surnames" name="surnames" type="text" required
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            placeholder="Tapara Yangali*" />
                     </div>
                 </div>
 
@@ -20,7 +35,8 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">Contraseña*</label>
                     <div class="mt-1">
                         <input id="password" name="password" type="password" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                            placeholder="********" />
                     </div>
                 </div>
 
@@ -28,8 +44,9 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">Confirmar Contraseña*</label>
                     <div class="mt-1">
                         <input id="password" name="password" type="password" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
-                    </div>
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            placeholder="********" />
+                        </div>
                 </div>
 
                 <div class="mt-4 text-sm text-center text-gray-600">

@@ -1,8 +1,8 @@
 CREATE TABLE users(
-    id integer PRIMARY KEY,
-    name varchar(100),
-    email varchar(50),
-    encrypted_password varchar(255),
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(50),
+    encrypted_password VARCHAR(255),
     role VARCHAR(255),
     created_at DATETIME
 );
