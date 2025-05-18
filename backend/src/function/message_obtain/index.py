@@ -1,29 +1,39 @@
 import json
-from datetime import datetime
+import pymysql
+import datetime
+from pymysql.err import IntegrityError
+
+# parametro de conexión RDS
+rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
+db_user = "admin"
+db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
+db_name = "doggodb"
+
 
 def handler(event, context):
-    # Get the HTTP method from the event
-    http_method = event['httpMethod']
-    
-    # Prepare the response based on the HTTP method
-    message_map = {
-        'GET': 'This would GET (read) an item from the database',
-        'POST': 'This would POST (create) a new item in the database',
-        'PUT': 'This would PUT (update) an existing item in the database',
-        'DELETE': 'This would DELETE an item from the database'
-    }
-    
-    message = message_map.get(http_method, 'Unsupported HTTP method')
-    
-    # Return the response
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': json.dumps({
-            'message': message,
-            'method': http_method,
-            'timestamp': datetime.now().isoformat()
-        })
-    }
+    connection = pymysql.connect(
+        host=rds_host, user=db_user, password=db_password, database=db_name
+    )
+
+    try:
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            cursor.execute("SELECT * FROM messages;")
+            results = cursor.fetchall()
+
+            for row in results:
+                if "created_at" in row and isinstance(
+                    row["created_at"], datetime.datetime
+                ):
+                    row["created_at"] = row["created_at"].strftime("%Y-%m-%d %H:%M:%S")
+
+        return {
+            "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps(results),
+        }
+
+    except Exception as e:
+        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+
+    finally:
+        connection.close()

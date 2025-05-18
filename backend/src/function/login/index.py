@@ -1,29 +1,84 @@
 import json
-from datetime import datetime
+import pymysql
+import bcrypt
+import jwt
+import datetime
+
+# parametro de conexión RDS
+rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
+db_user = "admin"
+db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
+db_name = "doggodb"
+
+SECRET_KEY = "3jI+eJg94dHhiD6skc7ZACFqXr7G/G/q/OVi7z9U9cNKeXrdFAV2m6vkr3msio5k"
+
 
 def handler(event, context):
-    # Get the HTTP method from the event
-    http_method = event['httpMethod']
-    
-    # Prepare the response based on the HTTP method
-    message_map = {
-        'GET': 'This would GET (read) an item from the database',
-        'POST': 'This would POST (create) a new item in the database',
-        'PUT': 'This would PUT (update) an existing item in the database',
-        'DELETE': 'This would DELETE an item from the database'
-    }
-    
-    message = message_map.get(http_method, 'Unsupported HTTP method')
-    
-    # Return the response
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': json.dumps({
-            'message': message,
-            'method': http_method,
-            'timestamp': datetime.now().isoformat()
-        })
-    }
+    try:
+        data = json.loads(event["body"])
+
+        email = data.get("email")
+        password = data.get("password")
+
+        if not all([email, password]):
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"error": "Faltan campos obligatorios"}),
+            }
+
+        connection = pymysql.connect(
+            host=rds_host,
+            user=db_user,
+            password=db_password,
+            db=db_name,
+            cursorclass=pymysql.cursors.DictCursor,
+        )
+
+        with connection.cursor() as cursor:
+            # procedimiento almacenado para obtener hash y datos del usuario
+            cursor.callproc("sp_get_password_hash", (email,))
+            user = cursor.fetchone()
+
+            if not user:
+                return {
+                    "statusCode": 404,
+                    "body": json.dumps({"error": "No existe el Usuario"}),
+                }
+
+            hashed_password = user["encrypted_password"].encode("utf-8")
+            password_bytes = password.encode("utf-8")
+
+            # verificar contraseña con bcrypt
+            if not bcrypt.checkpw(password_bytes, hashed_password):
+                return {
+                    "statusCode": 401,
+                    "body": json.dumps({"error": "Contraseña incorrecta"}),
+                }
+
+            # generar token JWT
+            payload = {
+                "user_id": user["id"],
+                "email": email,
+                "role": user["role"],
+                "exp": datetime.datetime.utcnow()
+                + datetime.timedelta(hours=2),  # expira en 2 horas
+            }
+            token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps(
+                {
+                    "success": "True",
+                    "token": token,
+                    "user": {
+                        "name": user["name"],
+                        "email": email,
+                        "role": user["role"],
+                    },
+                }
+            ),
+        }
+
+    except Exception as e:
+        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
