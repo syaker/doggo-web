@@ -1,83 +1,66 @@
 import json
-from datetime import datetime
 import pymysql
+import datetime
+import bcrypt
+from pymysql.err import IntegrityError
+
+# parametros db
+rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
+db_user = "admin"
+db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
+db_name = "doggodb"
+
 
 def handler(event, context):
-    http_method = event.get('httpMethod')
-    
-    if not http_method:
-        return {
-            'statusCode': 400,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': json.dumps({
-                'message': 'Bad Request: httpMethod is missing'
-            })
-        }
-    
-    if http_method == 'POST':
-        try:
-            body = json.loads(event['body'])
-            email = body['email']
-            password = body['password']
-            
-            # Connect to the RDS MySQL database
-            connection = pymysql.connect(
-                host='your-rds-endpoint',
-                user='master',
-                password='1XX4apk99*99',
-                database='doggo'
-            )
-            
-            with connection.cursor() as cursor:
-                # Check if the user already exists
-                cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-                user = cursor.fetchone()
-                
-                if user:
-                    return {
-                        'statusCode': 409,
-                        'headers': {
-                            'Content-Type': 'application/json'
-                        },
-                        'body': json.dumps({
-                            'message': 'User already exists'
-                        })
-                    }
-                
-                # Insert the new user into the database
-                cursor.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, password))
+    try:
+        data = json.loads(event["body"])
+
+        name = data.get("names") + " " + data.get("surnames")
+        email = data.get("email")
+        password = data.get("password")
+        role = "user"
+        created_at = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+
+        if not all([name, email, password]):
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"error": "Faltan campos obligatorios"}),
+            }
+
+        connection = pymysql.connect(
+            host=rds_host,
+            user=db_user,
+            password=db_password,
+            db=db_name,
+            cursorclass=pymysql.cursors.DictCursor,
+        )
+
+        with connection.cursor() as cursor:
+            # encriptar contraseña
+            password_bytes = password.encode("utf-8")
+            hashed = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
+            hashed_password = hashed.decode("utf-8")
+
+            # insertar nuevo usuario
+            sql = """
+            INSERT INTO users (name, email, encrypted_password, role, created_at)
+            VALUES (%s, %s, %s, %s, %s)
+            """
+            try:
+                cursor.execute(sql, (name, email, hashed_password, role, created_at))
                 connection.commit()
-            
-            return {
-                'statusCode': 201,
-                'headers': {
-                    'Content-Type': 'application/json'
-                },
-                'body': json.dumps({
-                    'message': 'User registered successfully'
-                })
-            }
-        except Exception as e:
-            return {
-                'statusCode': 500,
-                'headers': {
-                    'Content-Type': 'application/json'
-                },
-                'body': json.dumps({
-                    'message': str(e)
-                })
-            }
-        finally:
-            connection.close()
-    else:
-        return {
-            'statusCode': 405,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': json.dumps({
-                'message': 'Method not allowed'
-            })
-        }
+            except IntegrityError as ie:
+                if "Duplicate entry" in str(ie):
+                    return {
+                        "statusCode": 409,
+                        "body": json.dumps(
+                            {"error": "El correo electrónico ya está registrado"}
+                        ),
+                    }
+                else:
+                    raise
+
+        return {"statusCode": 201, "body": json.dumps({"message": "Registro exitoso"})}
+
+    except Exception as e:
+        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
