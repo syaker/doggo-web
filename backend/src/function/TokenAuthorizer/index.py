@@ -12,7 +12,7 @@ def handler(event, context):
         
         if not auth_token:
             print("Error: No authorization token provided")
-            return generate_policy("user", "Deny", event.get("methodArn"), f"Unauthorized:  {event['headers']['Authorization2']} ")
+            return generate_policy("user", "Deny", event.get("methodArn"), f"Unauthorized:  No authorization token provided ")
 
 
         # Decodificar el token JWT
