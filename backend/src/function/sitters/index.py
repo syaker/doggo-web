@@ -29,7 +29,7 @@ def handler(event, context):
             cursor.execute(sql, ("sitter",))
             sitters = cursor.fetchall()
 
-        # convertir datetime a string
+        # Convertir datetime a string
         for sitter in sitters:
             if isinstance(sitter.get("created_at"), datetime.datetime):
                 sitter["created_at"] = sitter["created_at"].isoformat()
