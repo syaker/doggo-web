@@ -41,7 +41,7 @@ def handler(event, context):
         )
 
         with connection.cursor() as cursor:
-            # Procedimiento almacenado para obtener hash y datos del usuario
+            # procedimiento almacenado para obtener hash y datos del usuario
             cursor.callproc("sp_get_password_hash", (email,))
             user = cursor.fetchone()
 
@@ -55,7 +55,7 @@ def handler(event, context):
             hashed_password = user["encrypted_password"].encode("utf-8")
             password_bytes = password.encode("utf-8")
 
-            # Verificar contraseña con bcrypt
+            # verificar contraseña con bcrypt
             if not bcrypt.checkpw(password_bytes, hashed_password):
                 return {
                     "statusCode": 401,

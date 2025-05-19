@@ -2,7 +2,7 @@ import json
 import pymysql
 import datetime
 
-# Parámetros de conexión RDS
+# parametro de conexión RDS
 rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
 db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
@@ -29,7 +29,7 @@ def handler(event, context):
             cursor.execute(sql, ("sitter",))
             sitters = cursor.fetchall()
 
-        # Convertir datetime a string
+        # convertir datetime a string
         for sitter in sitters:
             if isinstance(sitter.get("created_at"), datetime.datetime):
                 sitter["created_at"] = sitter["created_at"].isoformat()

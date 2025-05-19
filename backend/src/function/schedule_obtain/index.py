@@ -1,7 +1,7 @@
 import json
 import pymysql
 
-# Parámetros de conexión RDS
+# parametro de conexión RDS
 rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
 db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
@@ -15,7 +15,7 @@ CORS_HEADERS = {
 
 def handler(event, context):
     try:
-        # Extraer sitterId de pathParameters
+        # extraer sitterId de pathParameters
         sitter_id_raw = event.get("pathParameters", {}).get("sitterId")
 
         if not sitter_id_raw:
@@ -34,7 +34,7 @@ def handler(event, context):
                 "body": json.dumps({"error": "sitterId debe ser un número entero"}),
             }
 
-        # Conexión con la DB
+        # conexión con la DB
         connection = pymysql.connect(
             host=rds_host,
             user=db_user,
@@ -44,7 +44,7 @@ def handler(event, context):
         )
 
         with connection.cursor() as cursor:
-            # Obtener sitter_id, appointment_date y appointment_range
+            # obtener sitter_id, appointment_date y appointment_range
             sql = "SELECT sitter_id, appointment_date, appointment_range FROM schedulings WHERE sitter_id = %s"
             cursor.execute(sql, (sitter_id,))
             schedulings = cursor.fetchall()
@@ -56,11 +56,11 @@ def handler(event, context):
                 "body": json.dumps({"error": "No se encontró agenda para el cuidador"}),
             }
 
-        # Devuelve los días disponibles y los rangos
+        # devuelve los días disponibles y los rangos
         days_available = []
 
         for sched in schedulings:
-            # Extraer la fecha y el rango de la cita
+            # extraer la fecha y el rango de la cita
             appointment_date = str(sched["appointment_date"])
             appointment_range = sched["appointment_range"]
 
