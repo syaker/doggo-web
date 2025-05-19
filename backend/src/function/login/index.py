@@ -4,7 +4,7 @@ import bcrypt
 import jwt
 import datetime
 
-# Parámetros conexión RDS
+# parametros conexión RDS
 rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
 db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
