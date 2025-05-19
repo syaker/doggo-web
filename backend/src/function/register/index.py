@@ -10,6 +10,12 @@ db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
 db_name = "doggodb"
 
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
 
 def handler(event, context):
     try:
@@ -24,6 +30,7 @@ def handler(event, context):
         if not all([name, email, password]):
             return {
                 "statusCode": 400,
+                "headers": CORS_HEADERS,
                 "body": json.dumps({"error": "Faltan campos obligatorios"}),
             }
 
@@ -53,6 +60,7 @@ def handler(event, context):
                 if "Duplicate entry" in str(ie):
                     return {
                         "statusCode": 409,
+                        "headers": CORS_HEADERS,
                         "body": json.dumps(
                             {"error": "El correo electrónico ya está registrado"}
                         ),
@@ -60,7 +68,15 @@ def handler(event, context):
                 else:
                     raise
 
-        return {"statusCode": 201, "body": json.dumps({"message": "Registro exitoso"})}
+        return {
+            "statusCode": 201,
+            "headers": CORS_HEADERS,
+            "body": json.dumps({"message": "Registro exitoso"}),
+        }
 
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500,
+            "headers": CORS_HEADERS,
+            "body": json.dumps({"error": str(e)}),
+        }

@@ -7,6 +7,12 @@ db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
 db_name = "doggodb"
 
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,GET",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
 def handler(event, context):
     try:
         # extraer sitterId de pathParameters
@@ -15,6 +21,7 @@ def handler(event, context):
         if not sitter_id_raw:
             return {
                 "statusCode": 400,
+                "headers": CORS_HEADERS,
                 "body": json.dumps({"error": "Falta parámetro sitterId"}),
             }
 
@@ -23,10 +30,11 @@ def handler(event, context):
         except ValueError:
             return {
                 "statusCode": 400,
+                "headers": CORS_HEADERS,
                 "body": json.dumps({"error": "sitterId debe ser un número entero"}),
             }
 
-        # conexión con la db
+        # conexión con la DB
         connection = pymysql.connect(
             host=rds_host,
             user=db_user,
@@ -44,6 +52,7 @@ def handler(event, context):
         if not schedulings:
             return {
                 "statusCode": 404,
+                "headers": CORS_HEADERS,
                 "body": json.dumps({"error": "No se encontró agenda para el cuidador"}),
             }
 
@@ -64,15 +73,13 @@ def handler(event, context):
 
         return {
             "statusCode": 200,
+            "headers": CORS_HEADERS,
             "body": json.dumps({"days_available": days_available}),
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
         }
 
     except Exception as e:
         return {
             "statusCode": 500,
+            "headers": CORS_HEADERS,
             "body": json.dumps({"error": str(e)}),
         }

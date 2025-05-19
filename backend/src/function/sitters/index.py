@@ -8,6 +8,12 @@ db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
 db_name = "doggodb"
 
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,GET",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
 def handler(event, context):
     try:
         connection = pymysql.connect(
@@ -30,12 +36,13 @@ def handler(event, context):
 
         return {
             "statusCode": 200,
+            "headers": CORS_HEADERS,
             "body": json.dumps({"sitters": sitters}),
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
         }
 
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500,
+            "headers": CORS_HEADERS,
+            "body": json.dumps({"error": str(e)}),
+        }

@@ -9,6 +9,12 @@ db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
 db_name = "doggodb"
 
 
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
 def handler(event, context):
     try:
         # extraer sitterId de pathParameters
@@ -16,6 +22,7 @@ def handler(event, context):
         if not sitter_id_raw:
             return {
                 "statusCode": 400,
+                "headers": CORS_HEADERS,
                 "body": json.dumps({"error": "Falta parámetro sitterId"}),
             }
 
@@ -131,6 +138,7 @@ def handler(event, context):
 
                 return {
                     "statusCode": 201,
+                    "headers": CORS_HEADERS,
                     "body": json.dumps(
                         {
                             "message": "Cita agendada correctamente",
@@ -138,14 +146,14 @@ def handler(event, context):
                             "appointment_range": appointment_range,
                         }
                     ),
-                    "headers": {
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                    },
                 }
 
         finally:
             connection.close()
 
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500,
+            "headers": CORS_HEADERS,
+            "body": json.dumps({"error": str(e)}),
+        }

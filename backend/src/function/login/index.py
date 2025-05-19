@@ -12,6 +12,11 @@ db_name = "doggodb"
 
 SECRET_KEY = "3jI+eJg94dHhiD6skc7ZACFqXr7G/G/q/OVi7z9U9cNKeXrdFAV2m6vkr3msio5k"
 
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
 
 def handler(event, context):
     try:
@@ -23,6 +28,7 @@ def handler(event, context):
         if not all([email, password]):
             return {
                 "statusCode": 400,
+                "headers": CORS_HEADERS,
                 "body": json.dumps({"error": "Faltan campos obligatorios"}),
             }
 
@@ -42,6 +48,7 @@ def handler(event, context):
             if not user:
                 return {
                     "statusCode": 404,
+                    "headers": CORS_HEADERS,
                     "body": json.dumps({"error": "No existe el Usuario"}),
                 }
 
@@ -52,33 +59,28 @@ def handler(event, context):
             if not bcrypt.checkpw(password_bytes, hashed_password):
                 return {
                     "statusCode": 401,
+                    "headers": CORS_HEADERS,
                     "body": json.dumps({"error": "Contraseña incorrecta"}),
                 }
 
-            # generar token JWT
             payload = {
                 "user_id": user["id"],
                 "email": email,
                 "role": user["role"],
                 "exp": datetime.datetime.utcnow()
-                + datetime.timedelta(hours=2),  # expira en 2 horas
+                + datetime.timedelta(minutes=5),  # Expira en 5 minutos
             }
             token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
         return {
             "statusCode": 200,
-            "body": json.dumps(
-                {
-                    "success": "True",
-                    "token": token,
-                    "user": {
-                        "name": user["name"],
-                        "email": email,
-                        "role": user["role"],
-                    },
-                }
-            ),
+            "headers": CORS_HEADERS,
+            "body": json.dumps({"success": "True", "token": token, "email": email}),
         }
 
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500,
+            "headers": CORS_HEADERS,
+            "body": json.dumps({"error": str(e)}),
+        }
