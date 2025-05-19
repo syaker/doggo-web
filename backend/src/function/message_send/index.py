@@ -2,7 +2,7 @@ import json
 import pymysql
 import datetime
 
-# Parámetros conexión RDS
+# parametro de conexión RDS
 rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
 db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
@@ -22,7 +22,7 @@ def handler(event, context):
         sitter_id = data.get("sitter_id")
         client_id = data.get("client_id")
 
-        # Validar campos obligatorios
+        # validar campos obligatorios
         if not all([content, sitter_id, client_id]):
             return {
                 "statusCode": 400,

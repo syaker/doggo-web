@@ -4,7 +4,7 @@ import bcrypt
 import jwt
 import datetime
 
-# parametros conexión RDS
+# parametro de conexión RDS
 rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
 db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
@@ -59,17 +59,16 @@ def handler(event, context):
             if not bcrypt.checkpw(password_bytes, hashed_password):
                 return {
                     "statusCode": 401,
-                    "headers": CORS_HEADERS,  #
+                    "headers": CORS_HEADERS,
                     "body": json.dumps({"error": "Contraseña incorrecta"}),
                 }
 
-            # Generar token JWT
             payload = {
                 "user_id": user["id"],
                 "email": email,
                 "role": user["role"],
                 "exp": datetime.datetime.utcnow()
-                + datetime.timedelta(hours=2),  # Expira en 2 horas
+                + datetime.timedelta(minutes=5),  # Expira en 5 minutos
             }
             token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 

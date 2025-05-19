@@ -4,13 +4,12 @@ import datetime
 import bcrypt
 from pymysql.err import IntegrityError
 
-# Parámetros de conexión RDS
+# parametro de conexión RDS
 rds_host = "doggodb.c9tbszia7mni.eu-west-1.rds.amazonaws.com"
 db_user = "admin"
 db_password = "c6*fjC(b[A5jaZk?9~Iut>P:wR.D"
 db_name = "doggodb"
 
-# Encabezados CORS mínimos
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS,POST",
@@ -44,12 +43,12 @@ def handler(event, context):
         )
 
         with connection.cursor() as cursor:
-            # Encriptar contraseña
+            # encriptar contraseña
             password_bytes = password.encode("utf-8")
             hashed = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
             hashed_password = hashed.decode("utf-8")
 
-            # Insertar nuevo usuario
+            # insertar nuevo usuario
             sql = """
             INSERT INTO users (name, email, encrypted_password, role, created_at)
             VALUES (%s, %s, %s, %s, %s)
