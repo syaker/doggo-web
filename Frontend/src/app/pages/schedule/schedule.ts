@@ -1,48 +1,91 @@
-import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { AsyncPipe, CommonModule, NgFor } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BasicLayout } from '../../_components/BasicLayout/basic-layout';
+import { doggoClient } from '../../lib/doggo/client';
 
 @Component({
   standalone: true,
   selector: 'schedule',
   templateUrl: 'schedule.html',
-  styleUrl: 'schedule.css',
-  imports: [BasicLayout, NgFor],
+  styleUrls: ['schedule.css'],
+  imports: [BasicLayout, CommonModule, NgFor, AsyncPipe],
 })
-export class Schedule {
-  selectedDate: number | null = null;
+export class Schedule implements OnInit {
+  selectedDate: string | null = null;
   selectedTime: string | null = null;
 
-  daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
+  availability$ = null as Promise<{
+    days_available: { appointment_date: string; appointment_range: string }[];
+  }> | null;
 
-  availableTimes = [
-    '08:00',
-    '09:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-  ];
+  sitterId!: number;
+  clientId!: number;
 
-  selectDate(day: number): void {
-    this.selectedDate = day;
+  daysAvailable: string[] = [];
+  availableTimes: string[] = [];
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.sitterId = Number(this.route.snapshot.paramMap.get('sitterId'));
+    const clientId = localStorage.getItem('client-id');
+
+    if (!clientId) {
+      return;
+    }
+
+    this.clientId = Number(clientId);
+    this.loadAvailability();
   }
 
-  selectTime(time: string): void {
+  async loadAvailability() {
+    this.availability$ = doggoClient.getAvailabilityBySitterId(this.sitterId);
+    const availability = await this.availability$;
+    this.daysAvailable = [...new Set(availability.days_available.map((d) => d.appointment_date))];
+  }
+
+  selectDate(date: string) {
+    this.selectedDate = date;
+    this.availableTimes = [];
+
+    if (!this.availability$) {
+      return;
+    }
+
+    this.availability$.then((avail) => {
+      this.availableTimes = avail.days_available
+        .filter((d) => d.appointment_date === date)
+        .map((d) => d.appointment_range);
+    });
+  }
+
+  selectTime(time: string) {
     this.selectedTime = time;
   }
 
-  scheduleAppointment(): void {
-    if (this.selectedDate && this.selectedTime) {
-      alert(`Cita agendada para septiembre ${this.selectedDate} a las ${this.selectedTime}`);
-    } else {
+  async scheduleAppointment() {
+    if (!this.selectedDate || !this.selectedTime) {
       alert('Por favor, selecciona fecha y hora');
+      return;
+    }
+
+    try {
+      const success = await doggoClient.scheduleAppointment({
+        sitterId: this.sitterId,
+        clientId: this.clientId,
+        appointmentDate: this.selectedDate,
+        appointmentRange: this.selectedTime,
+      });
+
+      if (success) {
+        alert(`Cita agendada para ${this.selectedDate} a las ${this.selectedTime}`);
+      } else {
+        alert('Error agendando cita. Intenta de nuevo.');
+      }
+    } catch (error) {
+      alert('Error al comunicarse con el servidor.');
+      console.error(error);
     }
   }
 }

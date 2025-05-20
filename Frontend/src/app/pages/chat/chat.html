@@ -1,14 +1,41 @@
 <basic-layout>
   <div class="flex flex-col h-full w-full mx-auto bg-white chat-container">
-    <div class="overflow-y-auto h-full w-full p-4">
-      <div class="bg-gray-100 p-3 rounded-xl text-sm text-gray-800 w-fit max-w-[75%]">
-        ¡Hola 😊 Soy ..., tu cuidador de mascotas...
+    <!-- Contenedor de mensajes -->
+    <div class="overflow-y-auto h-full w-full p-4 flex flex-col space-y-2">
+      <div
+        *ngFor="let msg of messages"
+        [ngClass]="{
+          'self-end': msg.sender === 'client',
+          'self-start': msg.sender === 'sitter'
+        }"
+        class="max-w-[75%]"
+      >
+        <div
+          class="p-3 rounded-xl text-sm"
+          [ngClass]="{
+            'bg-green-600 text-white': msg.sender === 'client',
+            'bg-gray-100 text-gray-800': msg.sender === 'sitter'
+          }"
+        >
+          {{ msg.content }}
+        </div>
       </div>
     </div>
 
     <div class="flex items-center p-6 border-t h-20 w-full chat-container">
-      <input type="text" placeholder="Mensaje" class="chat-input w-full" />
-      <button class="ml-2 text-green-600 text-2xl">🎤</button>
+      <input
+        [(ngModel)]="message"
+        (keyup.enter)="sendMessage()"
+        type="text"
+        placeholder="Mensaje"
+        class="chat-input w-full"
+      />
+      <button
+        (click)="sendMessage()"
+        class="ml-2 px-4 py-2 bg-green-600 text-white text-base font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 cursor-pointer"
+      >
+        Enviar
+      </button>
     </div>
   </div>
 </basic-layout>

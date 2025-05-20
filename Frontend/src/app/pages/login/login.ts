@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { userClient } from '../../lib/user/client';
 
 @Component({
   standalone: true,
@@ -19,32 +20,37 @@ export class Login {
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    rememberMe: new FormControl(false),
   });
   isSubmitted = false;
   hidePassword = true;
+  isLogged = false;
 
   constructor(private router: Router) {}
 
-  get formControls() {
-    return this.loginForm.controls;
-  }
-
-  onSubmit(): void {
-    this.isSubmitted = true;
-
-    if (this.loginForm.invalid) {
-      // TODO: Show a message here when something is missing
+  async handleSubmit(): Promise<void> {
+    if (this.loginForm.invalid || !this.loginForm.value.email || !this.loginForm.value.password) {
+      console.log('Please fill al required fields', this.loginForm.value);
       return;
     }
 
-    // TODO: Login logic here!! call to the API
-    console.log('It woooorks', this.loginForm.value);
-    // this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
-  }
+    const response = await userClient.login(
+      this.loginForm.value.email,
+      this.loginForm.value.password,
+    );
 
-  handleSubmit(): void {
-    console.log('here');
-    this.router.navigateByUrl('/pet-sitters');
+    localStorage.setItem('auth-token', response.token);
+    localStorage.setItem('client-id', String(response.id));
+
+    this.isLogged = true;
+
+    if (!this.isLogged) {
+      console.log('There was an error trying to log in', this.loginForm.value);
+    }
+
+    if (this.isLogged) {
+      this.router.navigateByUrl('/pet-sitters');
+    } else {
+      console.error('There was an error trying to log in');
+    }
   }
 }

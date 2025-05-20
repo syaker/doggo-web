@@ -1,23 +1,31 @@
-import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { BasicLayout } from '../../_components/BasicLayout/basic-layout';
+import { doggoClient } from '../../lib/doggo/client';
+import { Service } from '../../lib/doggo/types';
 
 @Component({
   standalone: true,
   selector: 'home',
   templateUrl: 'home.html',
-  styleUrl: 'home.css',
-  imports: [BasicLayout],
+  styleUrls: ['home.css'],
+  imports: [BasicLayout, NgFor],
 })
-export class Home {
-  categories: string[] = [];
-  services: string[] = [];
+export class Home implements OnInit {
+  categories: string[] = ['Box 1', 'Box 2', 'Box 3', 'Box 4'];
+  services: Service[] = [];
 
-  constructor() {
-    this.loadCategories();
+  constructor() {}
+
+  ngOnInit() {
+    this.loadServices();
   }
 
-  loadCategories() {
-    this.categories = ['Box 1', 'Box 2', 'Box 3', 'Box 4'];
-    this.services = ['Box 1', 'Box 2', 'Box 3', 'Box 4'];
+  async loadServices() {
+    try {
+      this.services = await doggoClient.findAllServices();
+    } catch (error) {
+      console.error('Error cargando servicios:', error);
+    }
   }
 }

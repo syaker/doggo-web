@@ -48,51 +48,14 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">Patamiga</h3>
-        <p class="text-gray-600 mb-3">Guidamascotas</p>
-        <span class="text-green-600 font-bold">S/15 PEN</span>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">PET GUARDIANS</h3>
-        <p class="text-gray-600 mb-3">Gustu Méov</p>
-        <p class="text-gray-600 mb-2">Amigos de Pata</p>
-        <p class="text-gray-600 mb-3">Atención con cariño diario</p>
-        <span class="text-green-600 font-bold">S/90 PEN</span>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">Buscar</h3>
-        <p class="text-gray-600 mb-2">Ordenes</p>
-        <p class="text-gray-600 mb-2">PataMiga</p>
-        <p class="text-gray-600 mb-3">Cuidado y confianza garantizados</p>
-        <span class="text-green-600 font-bold">S/15 PEN</span>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">Cuidamascotas</h3>
-        <p class="text-gray-600 mb-3">Protección para tus mascotas.</p>
-        <span class="text-green-600 font-bold">S/B PEN</span>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">PetGuardians</h3>
-        <p class="text-gray-600 mb-3">Seguridad y amor constante.</p>
-        <span class="text-green-600 font-bold">S/40 PEN</span>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">Guau&Meow</h3>
-        <p class="text-gray-600 mb-3">Amigos fieles siempre.</p>
-        <span class="text-green-600 font-bold">S/60 PEN</span>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-        <h3 class="font-bold text-lg mb-2">Amigos de Pata</h3>
-        <p class="text-gray-600 mb-3">Atención con cariño diario</p>
-        <span class="text-green-600 font-bold">S/90 PEN</span>
+    <div class="services-list grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div
+        *ngFor="let service of services"
+        class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+      >
+        <h3 class="font-bold text-lg mb-2">{{ service.title }}</h3>
+        <p class="text-gray-600 mb-3">Sitter ID: {{ service.sitter_id }}</p>
+        <span class="text-green-600 font-bold">S/{{ service.price }} PEN</span>
       </div>
     </div>
   </div>
