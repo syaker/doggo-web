@@ -10,23 +10,23 @@ import { Router } from '@angular/router';
 import { userClient } from '../../lib/user/client';
 
 @Component({
+  standalone: true,
   selector: 'app-register',
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
-  registerForm: FormGroup;
+  registerForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    confirmPassword: new FormControl('', [Validators.minLength(6)]),
+    name: new FormControl('', [Validators.required]),
+    surname: new FormControl('', [Validators.required]),
+    termsAccepted: new FormControl(true, Validators.requiredTrue),
+  });
 
-  constructor(private router: Router) {
-    this.registerForm = new FormGroup({
-      email: new FormControl(['', [Validators.required, Validators.email]]),
-      password: new FormControl(['', [Validators.required, Validators.minLength(6)]]),
-      name: new FormControl(['', [Validators.required]]),
-      surname: new FormControl(['', [Validators.required]]),
-      termsAccepted: new FormControl([true, Validators.requiredTrue]),
-    });
-  }
+  constructor(private router: Router) {}
 
   async onSubmit() {
     if (!this.registerForm.valid) {
